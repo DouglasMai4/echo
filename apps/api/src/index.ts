@@ -3,6 +3,8 @@ import { cors } from 'hono/cors';
 
 import { auth } from './lib/auth.lib';
 
+import { loggerMiddleware } from './middlewares/logger.middleware';
+
 import { TRUSTED_ORIGINS } from './constants';
 
 const app = new Hono();
@@ -17,6 +19,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.use('*', loggerMiddleware);
 
 app.on(['POST', 'GET'], '/auth/*', (ctx) => {
 	return auth.handler(ctx.req.raw);
