@@ -1,5 +1,5 @@
 {
-	"name": "api",
+	"name": "@echo/api",
 	"scripts": {
 		"dev": "bun run --hot src/index.ts",
 		"auth:generate": "bunx @better-auth/cli generate --config src/lib/auth.lib.ts"
@@ -9,6 +9,7 @@
 		"@echo/database": "workspace: *",
 		"better-auth": "^1.4.18",
 		"hono": "^4.11.9",
+		"ofetch": "^1.5.1",
 		"stripe": "^20.3.1"
 	},
 	"devDependencies": {
