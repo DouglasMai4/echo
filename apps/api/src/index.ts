@@ -1,8 +1,28 @@
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+
+import { auth } from './lib/auth.lib';
+
+import { TRUSTED_ORIGINS } from './constants';
 
 const app = new Hono();
 
-app.get('/', (ctx) => {
+app.use(
+	'*',
+	cors({
+		origin: TRUSTED_ORIGINS,
+		allowHeaders: ['Content-Type', 'Authorization'],
+		exposeHeaders: ['Content-Length'],
+		maxAge: 600,
+		credentials: true,
+	}),
+);
+
+app.on(['POST', 'GET'], '/auth/*', (ctx) => {
+	return auth.handler(ctx.req.raw);
+});
+
+const routes = app.get('/', (ctx) => {
 	return ctx.json({
 		success: true,
 		data: {
@@ -12,3 +32,4 @@ app.get('/', (ctx) => {
 });
 
 export default app;
+export type AppType = typeof routes;
